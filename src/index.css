@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f7f7f9; --card: #ffffff; --card-2: #f3f4f7; --border: #e4e6ec; --fg: #0e1016; --muted: #667085;
+  --accent: #5b5bf0; --accent-soft: #eeeefe;
+  --pos: #10a875; --neg: #e5484d; --neu: #8a94a6;
+  --grid: #e9ebf0; --shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.05);
+}
+.dark {
+  --bg: #07080b; --card: #0e1015; --card-2: #14161d; --border: #1e212b; --fg: #eceef4; --muted: #8b91a3;
+  --accent: #7c7cff; --accent-soft: #1a1b33;
+  --pos: #34d399; --neg: #fb7185; --neu: #8b93a7;
+  --grid: #1a1d26; --shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans Devanagari", "Noto Sans Gujarati", sans-serif;
+  --color-bg: var(--bg); --color-card: var(--card); --color-card2: var(--card-2); --color-border: var(--border);
+  --color-fg: var(--fg); --color-muted: var(--muted); --color-accent: var(--accent); --color-accentsoft: var(--accent-soft);
+  --color-pos: var(--pos); --color-neg: var(--neg); --color-neu: var(--neu);
+}
+
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+* { transition-property: background-color, border-color, color, fill, stroke; transition-duration: 150ms; }
+.recharts-wrapper * { transition: none; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+.hero-glow {
+  background:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 85% 10%, color-mix(in srgb, #ec4899 16%, transparent), transparent 70%);
+}
+.grid-bg {
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px; mask-image: radial-gradient(70% 60% at 50% 0%, #000, transparent 75%);
+}
+.skeleton { background: linear-gradient(90deg, var(--card-2) 25%, var(--border) 50%, var(--card-2) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite linear; border-radius: 8px; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .35s ease both; }
+@keyframes toast-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+.toast-in { animation: toast-in .25s ease both; }
+.recharts-tooltip-wrapper { outline: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+::-webkit-scrollbar { height: 8px; width: 8px; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

@@ -1,0 +1,79 @@
+import { useState } from 'react'
+import { ArrowRight, BarChart3, BrainCircuit, FileDown, Languages, MessageSquareText, ShieldCheck, Link2, Layers } from 'lucide-react'
+import { Button } from './ui'
+
+const FEATURES = [
+  { icon: BrainCircuit, title: 'Multilingual sentiment AI', text: 'Every comment gets a sentiment, confidence score, detected language and emotion.' },
+  { icon: Layers, title: 'Aspect-based insights', text: 'See how people feel about the product, creator, video quality, content, pricing, music and service.' },
+  { icon: MessageSquareText, title: 'Questions & topics', text: 'Frequently asked questions, topic modeling, keywords, hashtags and similar-comment groups.' },
+  { icon: Languages, title: 'Hindi · Gujarati · Hinglish', text: 'Native-script and romanised comments are detected, analysed and kept exactly as written.' },
+  { icon: BarChart3, title: 'Engagement analytics', text: 'Views, likes, engagement rate, comment timeline and sentiment-weighted likes at a glance.' },
+  { icon: FileDown, title: 'One-click reports', text: 'Export the full analysis as CSV, Excel or a PDF report.' },
+]
+
+export default function Landing({ onAnalyze, status, initialUrl = '' }) {
+  const [url, setUrl] = useState(initialUrl)
+  const submit = (e) => { e.preventDefault(); onAnalyze(url.trim()) }
+  const live = status?.instagram_configured
+  return (
+    <div className="relative overflow-hidden">
+      <div className="hero-glow pointer-events-none absolute inset-0" />
+      <div className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-[520px] opacity-60" />
+      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
+        <div className="rise mx-auto max-w-3xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs text-muted backdrop-blur">
+            <span className="size-1.5 rounded-full bg-pos" /> Live analysis · paste any public Reel link
+          </span>
+          <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight sm:text-6xl">
+            Understand what your audience <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">really feels</span> about a Reel
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted sm:text-lg">
+            Paste an Instagram Reel link. ReelSense AI collects the accessible metadata and comments, runs multilingual sentiment and topic analysis, and turns it into a dashboard you can export.
+          </p>
+
+          <form onSubmit={submit} className="mx-auto mt-9 max-w-2xl">
+            <div className="card flex flex-col gap-2 p-2 sm:flex-row sm:items-center">
+              <div className="flex flex-1 items-center gap-2 px-3">
+                <Link2 size={16} className="shrink-0 text-muted" />
+                <input
+                  value={url} onChange={(e) => setUrl(e.target.value)} type="url" inputMode="url" autoComplete="off" spellCheck={false}
+                  placeholder="https://www.instagram.com/reel/…" aria-label="Instagram Reel URL"
+                  className="h-11 w-full bg-transparent text-sm outline-none placeholder:text-muted/70 focus-visible:outline-none"
+                />
+              </div>
+              <Button type="submit" icon={ArrowRight} className="h-11 sm:px-6">Analyze Reel</Button>
+            </div>
+            <p className="mt-4 text-xs text-muted">Works with any public Reel link · no login or sign-up · analysis takes ~30–90 seconds</p>
+          </form>
+
+          {status && (
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-[11px] text-muted">
+              <Chip ok={live} label={live ? 'Live data provider connected' : 'Free Apify token needed once – you’ll be asked on first analyze'} />
+            </div>
+          )}
+        </div>
+
+        <div className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f, i) => (
+            <div key={f.title} className="card rise p-5 transition hover:-translate-y-0.5 hover:border-accent/40" style={{ animationDelay: `${i * 50}ms` }}>
+              <div className="mb-3 grid size-9 place-items-center rounded-lg bg-accentsoft text-accent"><f.icon size={18} /></div>
+              <h3 className="text-sm font-semibold">{f.title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mx-auto mt-10 flex max-w-3xl items-start gap-3 rounded-xl border border-border bg-card/60 p-4 text-xs leading-relaxed text-muted">
+          <ShieldCheck size={16} className="mt-0.5 shrink-0 text-pos" />
+          <p>ReelSense reads only publicly available Reel data and comments through an authorised data provider. It never asks for your Instagram login and cannot analyze private or deleted Reels. Sentiment and topic results are generated by AI models and may be imperfect, especially for mixed-language comments.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Chip = ({ ok, label }) => (
+  <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/70 px-2.5 py-1">
+    <span className={`size-1.5 rounded-full ${ok ? 'bg-pos' : 'bg-amber-500'}`} />{label}
+  </span>
+)

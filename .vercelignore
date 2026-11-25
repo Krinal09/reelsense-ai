@@ -1,0 +1,6 @@
+node_modules
+tests
+*.zip
+.env
+env.txt
+.env.txt
